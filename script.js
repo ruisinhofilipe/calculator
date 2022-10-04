@@ -1,33 +1,59 @@
-function add(a,b){
-    return a + b;
-};
+function add(x, y) {
+    return x + y;
+}
 
-function subtract(a,b){
-    return a - b;
-};
+function subtract(x, y) {
+    return x - y;
+}
 
-function multiply(a,b){
-    return a * b;
-};
+function multiply(x, y) {
+    return x * y;
+}
 
-function divide(a,b){
-    return a / b;
-};
+function divide(x, y) {
+    return x / y;
+}
 
-function operate(){
-    let first = Number(prompt("first number"));
-    let second = Number(prompt("second number"));
-    let operator = prompt("what operator do you want?");
-    
-    if(operator == "add"){
-        console.log(add(first,second));
-    }else if(operator == "subtract"){
-        console.log(subtract(first,second));
-    }else if(operator == "multiply"){
-        console.log(multiply(first,second));
-    }else if(operator == "divide"){
-        console.log(divide(first,second));
-    };
-};
+let display = document.querySelector('.currentOutput');
+let previousDisplay = document.querySelector('.previousOutput')
+let equal = document.querySelector('.equal');
+let numbers = document.querySelectorAll('.numbers');
+let operators = document.querySelectorAll('.operators');
+let firstValue = '';
+let secondValue;
+let mainOperator;
 
-operate();
+numbers.forEach(number => {
+    number.addEventListener('click', () => {
+        firstValue += number.id;
+        display.textContent = firstValue;
+    });
+});
+
+operators.forEach(operator => {
+    operator.addEventListener('click', () => {
+        mainOperator = operator.id;
+        secondValue = firstValue;
+        firstValue = '';
+        previousDisplay.textContent = `${secondValue} ${operator.id}`;
+        display.textContent = '';
+    })
+})
+
+equal.addEventListener('click', () => {
+    calculate();
+})
+
+function calculate() {
+    firstValue = Number(firstValue);
+    secondValue = Number(secondValue);
+    if (mainOperator === '+') {
+        display.textContent = add(secondValue, firstValue);
+    } else if (mainOperator === '-') {
+        display.textContent = subtract(secondValue, firstValue);
+    } else if (mainOperator === '*') {
+        display.textContent = multiply(secondValue, firstValue);
+    } else if (mainOperator === '/') {
+        display.textContent = divide(secondValue, firstValue);
+    }
+}
