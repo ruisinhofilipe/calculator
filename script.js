@@ -3,7 +3,7 @@ function add(x, y) {
 }
 
 function subtract(x, y) {
-    return x - y;
+    return x + y;
 }
 
 function multiply(x, y) {
@@ -17,27 +17,38 @@ function divide(x, y) {
 let display = document.querySelector('.currentOutput');
 let previousDisplay = document.querySelector('.previousOutput')
 let equal = document.querySelector('.equal');
+let deleteAll = document.querySelector('.delete');
+let clear = document.querySelector('.clear');
 let numbers = document.querySelectorAll('.numbers');
 let operators = document.querySelectorAll('.operators');
-let firstValue = '';
-let secondValue;
-let mainOperator;
+let array = [];
+let mainValue = 0;
+let currentValue = '';
+let previousValue = '';
+let mainOperator = '';
+
 
 numbers.forEach(number => {
     number.addEventListener('click', () => {
-        firstValue += number.id;
-        display.textContent = firstValue;
-    });
+        currentValue += number.id;
+        display.textContent = currentValue;
+    })
 });
 
 operators.forEach(operator => {
     operator.addEventListener('click', () => {
         mainOperator = operator.id;
-        secondValue = firstValue;
-        firstValue = '';
-        previousDisplay.textContent = `${secondValue} ${operator.id}`;
-        display.textContent = '';
+        previousValue = currentValue;
+        currentValue = '';
+        array.push(previousValue);
+        array.push(mainOperator);
+        previousDisplay.textContent = array.join(' ');
     })
+});
+
+clear.addEventListener('click', () => {
+    currentValue = currentValue.slice(0, currentValue.length - 1);
+    display.textContent = currentValue;
 })
 
 equal.addEventListener('click', () => {
@@ -45,15 +56,21 @@ equal.addEventListener('click', () => {
 })
 
 function calculate() {
-    firstValue = Number(firstValue);
-    secondValue = Number(secondValue);
+    previousValue = Number(previousValue);
+    currentValue = Number(currentValue);
     if (mainOperator === '+') {
-        display.textContent = add(secondValue, firstValue);
+        mainValue += previousValue + currentValue;
     } else if (mainOperator === '-') {
-        display.textContent = subtract(secondValue, firstValue);
-    } else if (mainOperator === '*') {
-        display.textContent = multiply(secondValue, firstValue);
+        mainValue += previousValue - currentValue;
     } else if (mainOperator === '/') {
-        display.textContent = divide(secondValue, firstValue);
+        mainValue /= previousValue / currentValue;
+    } else if (mainOperator === '*') {
+        mainValue *= previousValue * currentValue;
     }
+    array.push(currentValue);
+    previousDisplay.textContent = array.join(' ');
+    display.textContent = mainValue;
+    previousValue = '';
+    currentValue = '';
+    mainOperator = '';
 }
