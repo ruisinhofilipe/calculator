@@ -27,13 +27,13 @@
     border: 2px solid black;
 }
 
-.currentOutput {
+.displayCurrentValue {
     background-color: aqua;
     height: 25px;
     color: black;
 }
 
-.previousOutput {
+.displayPreviousValue {
     background-color: red;
     height: 25px;
     color: black;
